@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {Course, sortCoursesBySeqNo} from '../model/course';
-import {interval, noop, Observable, of, throwError, timer} from 'rxjs';
-import {catchError, delay, delayWhen, filter, finalize, map, retryWhen, shareReplay, tap} from 'rxjs/operators';
-import { CoursesService } from '../services/courses.service';
+import { Course } from '../model/course';
+import { Observable } from 'rxjs';
+import { CoursesStore } from '../services/courses.store';
 
 
 @Component({
@@ -18,7 +17,9 @@ export class HomeComponent implements OnInit {
   advancedCourses$: Observable<Course[]>;
 
 
-  constructor(private coursesService: CoursesService) {
+  constructor(
+    private coursesStore: CoursesStore,
+  ) {
 
   }
 
@@ -27,16 +28,10 @@ export class HomeComponent implements OnInit {
   }
 
   reloadCourses() {
-    const courses$ = this.coursesService.loadAllCourses().pipe(
-      map(courses => courses.sort(sortCoursesBySeqNo))
-    );
-    this.beginnerCourses$ = courses$.pipe(
-      map(courses => courses.filter(course => course.category == 'BEGINNER'))
-    );
 
-    this.advancedCourses$ = courses$.pipe(
-      map(courses => courses.filter(course => course.category == 'ADVANCED'))
-    );
+    this.beginnerCourses$ = this.coursesStore.filterByCategory('BEGINNER')
+
+    this.advancedCourses$ = this.coursesStore.filterByCategory('ADVANCED');
   }
 
 }
