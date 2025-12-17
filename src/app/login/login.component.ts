@@ -4,7 +4,6 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 import {Router} from '@angular/router';
 import { AuthStore } from '../services/auth.store';
-import { error } from 'console';
 
 @Component({
     selector: 'login',

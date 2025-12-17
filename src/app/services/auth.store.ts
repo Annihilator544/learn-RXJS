@@ -24,8 +24,8 @@ export class AuthStore {
         }
     }
 
-    login(username: string, password: string): Observable<User> {
-        return this.http.post<User>('/api/login', { username, password })
+    login(email: string, password: string): Observable<User> {
+        return this.http.post<User>('/api/login', { email, password })
         .pipe(
             tap(user => {
                 this.subject.next(user)
